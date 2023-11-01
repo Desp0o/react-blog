@@ -50,3 +50,7 @@ input{
   appearance: none;
   -webkit-appearance: none;
 }
+
+input:disabled{
+  cursor:not-allowed;
+}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import axios from "axios"
+import ButtonComponent from '../button/buttonComponent'
 
 export default function SignUpForm() {
 
@@ -47,7 +48,7 @@ export default function SignUpForm() {
             Upload Image
           </label>
 
-        <div className='signUp_btn' onClick={sendValues}>Register</div>
+        <ButtonComponent text='Register' funName={sendValues} />
 
         <p className={response === 'You have successfully registered' ? 'signUp_response' : 'signUp_response_error'}>{response}</p>
     </div>

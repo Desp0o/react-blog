@@ -1,0 +1,29 @@
+.profile_main{
+    padding-top: 100px;
+}
+
+.profile_inner{
+    width: 100%;
+    max-width: 1400px;
+    padding: 150px 50px 0 50px;
+    margin: auto;
+}
+
+.profile_header{
+    text-align: center;
+}
+
+.profile_content{
+    width: 100%;
+    display: flex;
+}
+
+.user_info{
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+}
+
+.user_info_title{
+    text-align: center;
+}

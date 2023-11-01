@@ -69,3 +69,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 # react-blog
+# react-blog git init git add README.md git commit -m first commit git branch -M client git remote add origin https://github.com/Desp0o/react-blog.git git push -u origin client

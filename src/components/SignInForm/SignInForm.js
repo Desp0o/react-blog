@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import { AuthContext } from '../AuthContext'
 import { useNavigate } from 'react-router-dom'
 import axios from "axios"
+import ButtonComponent from '../button/buttonComponent'
 
 export default function SignInForm() {
 
@@ -51,7 +52,7 @@ export default function SignInForm() {
             <input className='inputStyle' type='password' name='password' id='password' placeholder='Password' value={values.password} onInput={handleValues}/>
         </div>
 
-        <div className='signUp_btn' onClick={getValues}>Log In</div>
+        <ButtonComponent text='Log In' funName={getValues} />
 
         <p className='signUp_response_error'>{response}</p>
     </div>
