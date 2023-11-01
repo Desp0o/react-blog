@@ -179,3 +179,64 @@ export const userLogOut = (req, res)=>{
   // Send a response to indicate a successful logout
   res.status(200).json({ message: 'User has been logged out' });
 }
+
+export const updateUser = (req, res) => {
+  const token = req.cookies.access_token;
+
+  if (!token) return res.status(401).json("Not authenticated!");
+
+  jwt.verify(token, process.env.JWTKEY, (err, userInfo) => {
+    const userId = userInfo.id;
+
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+    const { currentPassword, newPassword } = req.body
+    // Construct the SQL query to fetch the user's current password
+    const selectQuery = "SELECT password FROM users WHERE id = ?";
+    pool.query(selectQuery, [userId], (selectErr, selectData) => {
+      if (selectErr) {
+        return res.status(500).json({ error: "Internal server error" });
+      }
+  
+      if (selectData.length === 0) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      const user = selectData[0];
+  
+      if (!user.password) {
+        return res.status(400).json({ error: 'User password not found' });
+      }
+  
+      // Check if the current password provided in the request matches the stored password
+      const isPasswordCorrect = bcrypt.compareSync(currentPassword, user.password);
+  
+      if (!isPasswordCorrect) {
+        return res.status(400).json({ error: 'Current password is incorrect' });
+      }
+  
+      // Hash the new password before updating it in the database
+      const hashedNewPassword = bcrypt.hashSync(newPassword, 10); // Adjust the hashing cost factor as needed
+  
+      // Construct the SQL query to update the user's password
+      const updateQuery = "UPDATE users SET password = ? WHERE id = ?";
+  
+      // Execute the SQL query with the new hashed password and user ID
+      pool.query(updateQuery, [hashedNewPassword, userId], (updateErr, updateData) => {
+        if (updateErr) {
+          return res.status(500).json({ error: "Internal server error" });
+        }
+  
+        // If the update was successful, return a success response
+        res.status(200).json({ message: 'Password updated successfully' });
+      });
+    });
+
+
+
+
+
+  })
+};
+

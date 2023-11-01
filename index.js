@@ -1,7 +1,7 @@
 import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
-import {userLogin, userReg, AuthenticatedUser, userLogOut, refreshAccessToken } from "./routes/users/users.js"
+import {userLogin, updateUser, userReg, AuthenticatedUser, userLogOut, refreshAccessToken } from "./routes/users/users.js"
 import { addPost, getAllPosts, getUserPosts } from "./routes/posts/posts.js"
 
 const app = express()
@@ -19,6 +19,7 @@ app.post('/users/login', userLogin)
 app.get('/users/checktoken', AuthenticatedUser)
 app.post('/users/refreshtoken', refreshAccessToken)
 app.get('/users/logout', userLogOut)
+app.post('/users/updateuser', updateUser)
 
 app.post('/posts', addPost)
 app.get('/posts/:id', getUserPosts)
