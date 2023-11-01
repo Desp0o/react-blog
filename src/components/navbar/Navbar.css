@@ -1,0 +1,97 @@
+.navbar{
+    box-sizing: border-box;
+    height: 100px;
+    width: 100%;
+    max-width: 1400px;
+    padding: 0 50px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    position: absolute;
+    transform: translateX(-50%);
+    left: 50%;
+    top: 0;
+}
+
+.svgLogo{
+    margin-top: 10px;
+}
+
+.nav_menu{
+    display: flex;
+    align-items: center;
+    gap: 160px;
+}
+
+.nav_links{
+    display: flex;
+    gap: 50px;
+}
+
+.nav_link_item{
+    color: var(--brown);
+    font-size: 16px;
+}
+
+.nav_auth{
+    display: flex;
+    gap: 10px;
+}
+
+.nav_auth_item_filled{
+    box-sizing: border-box;
+    width: 123px;
+    height: 38px;
+    background-color: var(--brown);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 3px solid var(--brown);
+    border-radius: 30px;
+    color: var(--white);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.nav_auth_item_stroked{
+    box-sizing: border-box;
+    width: 123px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 3px solid var(--brown);
+    border-radius: 30px;
+    color: var(--brown);
+    font-size: 16px;
+    font-weight: 500; 
+}
+
+.authorized_user{
+    display: flex;
+    gap:20px;
+    align-items: center;
+}
+
+.logout_out{
+    width: 80px;
+    height: 28px;
+    font-size: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--brown);
+    border-radius: 30px;
+    color: var(--white);
+}
+
+.user_name{
+    color: var(--brown);
+}
