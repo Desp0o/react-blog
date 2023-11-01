@@ -79,7 +79,7 @@
     align-items: center;
 }
 
-.logout_out{
+.small_btn{
     width: 80px;
     height: 28px;
     font-size: 14px;
@@ -90,6 +90,8 @@
     background-color: var(--brown);
     border-radius: 30px;
     color: var(--white);
+
+    cursor: pointer;
 }
 
 .user_name{

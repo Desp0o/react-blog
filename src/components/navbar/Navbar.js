@@ -5,6 +5,7 @@ import LogoSvg from "../allSvg"
 import NavLinkItem from './NavLinkItem'
 import AuthLink from './AuthLink'
 import { Link } from 'react-router-dom'
+import SmallButtonComponent from '../button/smallButtonComponent'
 
 export default function Navbar() {
     const {currentUser,logOutHandler} = useContext(AuthContext)
@@ -24,7 +25,7 @@ export default function Navbar() {
                 {currentUser !== null ? 
                     <div className='authorized_user'> 
                         <Link to="/pages/Profile" className='user_name'>{currentUser}</Link> 
-                        <p className='logout_out' onClick={logOutHandler}>Log Out</p>
+                        <SmallButtonComponent text='Log Out' funName={logOutHandler} />
                     </div>
                         : 
                     <div className='nav_auth'>
