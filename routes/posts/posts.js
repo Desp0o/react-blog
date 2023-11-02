@@ -25,8 +25,7 @@ export const addPost = (req, res) => {
         return res.json("Post has been created.");
       });
     });
-  };
-
+};
 
 export const getAllPosts = (req, res) => {
     const query = "SELECT * FROM `posts`"
@@ -40,18 +39,52 @@ export const getAllPosts = (req, res) => {
 
 export const getUserPosts = (req, res) => {
     const token = req.cookies.access_token;
+    
     if (!token) return res.status(401).json("Not authenticated!");
 
     jwt.verify(token, process.env.JWTKEY, (err, userInfo) => {
         if (err) return res.status(403).json("Token is not valid!");
 
-        const query =
-            "SELECT * FROM posts WHERE `uid` = ?";
+        const query = "SELECT * FROM posts WHERE `uid` = ?";
 
         pool.query(query, [userInfo.id], (err, data) => {
             if (err) return res.status(500).json(err);
-            console.log(data);
+            
             return res.status(200).json(data);
         });
     });
+};
+
+
+
+export const getSinglePost = (req, res) => {
+  const token = req.cookies.access_token;
+
+  if (!token) {
+    return res.status(401).json("Not authenticated!");
+  }
+
+  jwt.verify(token, process.env.JWTKEY, (err, userInfo) => {
+    if (err) {
+      return res.status(403).json("Token is not valid!");
+    }
+
+    const postId = req.params.postid;
+
+    const query = "SELECT * FROM posts WHERE postid = ?";
+
+    pool.query(query, [postId], (err, results) => {
+      if (err) {
+        return res.status(500).json({ error: 'Database query error' });
+      }
+      
+      if (results.length > 0) {
+        const post = results[0];
+        
+        return res.json(post);
+      } else {
+        return res.status(404).json({ message: 'Post not found' });
+      }
+    });
+  });
 };

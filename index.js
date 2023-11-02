@@ -2,7 +2,7 @@ import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
 import {userLogin, updateUser, userReg, AuthenticatedUser, userLogOut, refreshAccessToken } from "./routes/users/users.js"
-import { addPost, getAllPosts, getUserPosts } from "./routes/posts/posts.js"
+import { addPost, getAllPosts, getUserPosts, getSinglePost } from "./routes/posts/posts.js"
 
 const app = express()
 app.use(cors({origin: 'http://localhost:3000', credentials: true})); 
@@ -24,6 +24,7 @@ app.post('/users/updateuser', updateUser)
 app.post('/posts', addPost)
 app.get('/posts/:id', getUserPosts)
 app.get('/posts/', getAllPosts)
+app.get('/posts/singleposts/:postid', getSinglePost)
 
 
 app.listen(port)
