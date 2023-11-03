@@ -35,6 +35,10 @@
 
 .last_posts_content{
     margin-top: 20px;
+    height: 330px;
+    background-color: tan;
+    overflow-x: hidden;
+    overflow-y: scroll;
     display: flex;
     flex-direction: column;
     gap: 10px;
