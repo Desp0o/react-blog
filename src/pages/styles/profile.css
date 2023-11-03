@@ -3,8 +3,8 @@
 }
 
 .profile_inner{
-    width: 100%;
-    max-width: 1400px;
+    width: 1200px;
+    max-width: 100%;
     padding: 150px 50px 0 50px;
     margin: auto;
 }

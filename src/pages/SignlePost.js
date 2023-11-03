@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from "axios"
+import "./styles/singlePostPage.css"
+
 
 export default function SignlePost() {
 
@@ -25,10 +27,12 @@ export default function SignlePost() {
 
 
   return (
-    <div>
-        <p>title: {data?.title}</p>
-        <p>title: {data?.category}</p>
-        <p>title: {data?.content}</p>
+    <div className='single_post'>
+        <div className='single_post_inner'>
+          <p>{data?.title}</p>
+          <p>{data?.category}</p>
+          <div className='content_single_p' dangerouslySetInnerHTML={{ __html: data.content }} />
+        </div>
     </div>
   )
 }

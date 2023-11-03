@@ -8,6 +8,7 @@ import Recipes from "./pages/Recipes";
 import PrivateRoutes from "./components/privateRoutes/PrivateRoutes";
 import Profile from "./pages/Profile";
 import SignlePost from "./pages/SignlePost";
+import CreatePost from "./pages/CreatePost";
 
 function App() {
   return (
@@ -19,8 +20,10 @@ function App() {
       <Route exact path="/pages/SignUp" element={<SignUp />} />
       <Route exact path="/pages/Recipes" element={<Recipes />} />
       <Route exact path="/pages/singlepost/:postId" element={<SignlePost />} />
+      
       <Route element={<PrivateRoutes />}>
         <Route exact path="/pages/Profile" element={<Profile />} />
+        <Route exact path="/pages/CreatePost" element={<CreatePost />} />
       </Route>
     </Routes>
    </>

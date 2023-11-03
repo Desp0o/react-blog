@@ -44,13 +44,15 @@ a{
   border: 3px solid var(--brown);
 }
 
-input{
+button,input{
   border: none;
   outline: none;
   appearance: none;
   -webkit-appearance: none;
+  background-color: inherit;
 }
 
 input:disabled{
   cursor:not-allowed;
 }
+
