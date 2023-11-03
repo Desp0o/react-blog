@@ -1,5 +1,4 @@
 import { pool } from "../dbConnect.js"
-import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
 
 export const addPost = (req, res) => {
@@ -58,6 +57,31 @@ export const getUserPosts = (req, res) => {
 
 
 export const getSinglePost = (req, res) => {
+  const token = req.cookies.access_token;
+
+  jwt.verify(token, process.env.JWTKEY, (err, userInfo) => {
+
+    const postId = req.params.postid;
+
+    const query = "SELECT * FROM posts WHERE postid = ?";
+
+    pool.query(query, [postId], (err, results) => {
+      if (err) {
+        return res.status(500).json({ error: 'Database query error' });
+      }
+      
+      if (results.length > 0) {
+        const post = results[0];
+        
+        return res.json(post);
+      } else {
+        return res.status(404).json({ message: 'Post not found' });
+      }
+    });
+  });
+};
+
+export const getSinglePostForEdit = (req, res) => {
   const token = req.cookies.access_token;
 
   if (!token) {
