@@ -9,6 +9,10 @@ import PrivateRoutes from "./components/privateRoutes/PrivateRoutes";
 import Profile from "./pages/Profile";
 import SignlePost from "./pages/SignlePost";
 import CreatePost from "./pages/CreatePost";
+import EditPost from "./pages/EditPost";
+
+
+import 'react-quill/dist/quill.snow.css';
 
 function App() {
   return (
@@ -24,6 +28,7 @@ function App() {
       <Route element={<PrivateRoutes />}>
         <Route exact path="/pages/Profile" element={<Profile />} />
         <Route exact path="/pages/CreatePost" element={<CreatePost />} />
+        <Route exact path="/pages/EditPost/:postId" element={<EditPost />} />
       </Route>
     </Routes>
    </>

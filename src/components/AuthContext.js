@@ -6,6 +6,7 @@ export const AuthContext = createContext();
 export const AuthContexProvider = ({ children }) => {
     
     const [currentUser, setCurrentUSer] = useState(JSON.parse(localStorage.getItem("user")) || null)
+    const [currentMail, setCurrentMail] = useState(JSON.parse(localStorage.getItem("mail")) || null)
     const [refreshToken, setRefreshToken] = useState(JSON.parse(localStorage.getItem("refreshToken")) || null)
     const [tokenStatus, setTokenStatus] = useState('')
     const intervalInMilliseconds = (3 * 60 * 60 * 1000) + (55 * 60 * 1000);
@@ -13,7 +14,9 @@ export const AuthContexProvider = ({ children }) => {
 
     useEffect(()=>{
         setCurrentUSer(JSON.parse(localStorage.getItem("user")))  
+        setCurrentMail(JSON.parse(localStorage.getItem("mail")))
     },[currentUser])
+  
 
     const chekToken = async () => {
       try {
@@ -29,7 +32,9 @@ export const AuthContexProvider = ({ children }) => {
 
       if (tokenStatus === 'no-token') {
         localStorage.setItem('user', null);
+        localStorage.setItem('mail', null);
         setCurrentUSer(JSON.parse(localStorage.getItem("user")));
+        setCurrentMail(JSON.parse(localStorage.getItem("mail")));
       }
 
       console.log(tokenStatus);
@@ -67,11 +72,11 @@ export const AuthContexProvider = ({ children }) => {
         };
       }
       
-    },[tokenStatus])
+    },[tokenStatus,intervalInMilliseconds ])
    
 
     return (
-      <AuthContext.Provider value={{tokenStatus, currentUser, setRefreshToken, setCurrentUSer, logOutHandler }}>
+      <AuthContext.Provider value={{tokenStatus, currentUser, currentMail,chekToken, setCurrentMail, setRefreshToken, setCurrentUSer, logOutHandler }}>
         {children}
       </AuthContext.Provider>
     );

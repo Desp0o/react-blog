@@ -56,3 +56,15 @@ input:disabled{
   cursor:not-allowed;
 }
 
+
+.MyEditor{
+  height: 100px;
+}
+
+.lexical1{
+  margin-top: 100px;
+}
+
+.lexical2{
+  height: 200px;
+}

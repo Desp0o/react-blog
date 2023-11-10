@@ -5,18 +5,25 @@ import { Link } from "react-router-dom"
 export default function MapSingleUserPost({data}) {
 
   
-  
   return (
     <>
         {data?.map((post)=>{
             return(
-              <Link to={`/pages/singlepost/${post.postid}`} key={post.postid} >
-                <div className='last_post_single' >
-                    <p>{post.title.length > 15 ? post.title.substring(0, 15) + '...' : post.title}</p>
-                    <SmallButtonComponent text='Edit' id={post.postid} />
-                    <p >post edit</p>
+              
+                <div className='last_post_single' key={post.postid}>
+                    <p className='user_last_post_title'>{post.title.length > 15 ? post.title.substring(0, 15) + '...' : post.title}</p>
+                    
+                    <Link to={`/pages/singlepost/${post.postid}`}>
+                      <SmallButtonComponent text='Visit' id={post.postid} />
+                    </Link>
+
+                    <Link to={`/pages/EditPost/${post.postid}`}>
+                      <SmallButtonComponent text='Edit' />
+                    </Link>
+                    
+                   
                 </div>
-              </Link>
+              
             )
         })}
     </>

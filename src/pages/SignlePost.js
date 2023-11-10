@@ -23,7 +23,7 @@ export default function SignlePost() {
 
     useEffect(()=>{
         fetchSinglePost(postId)
-    },[])  
+    },[postId])  
 
 
   return (
@@ -31,6 +31,7 @@ export default function SignlePost() {
         <div className='single_post_inner'>
           <p>{data?.title}</p>
           <p>{data?.category}</p>
+          <img src={data.cover} />
           <div className='content_single_p' dangerouslySetInnerHTML={{ __html: data.content }} />
         </div>
     </div>

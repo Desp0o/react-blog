@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { useParams } from 'react-router-dom'
 import {AuthContext} from '../components/AuthContext'
 import ReactQuill from 'react-quill';
 import { Quill } from 'react-quill';
@@ -6,71 +7,73 @@ import 'react-quill/dist/quill.snow.css';
 import './styles/createpost.css';
 import axios from 'axios';
 import BlotFormatter from 'quill-blot-formatter';
-import LoadingDiv from '../components/loadingDiv/LoadingDiv';
 
 Quill.register('modules/blotFormatter', BlotFormatter);
 
+export default function EditPost() {
+    const { postId } = useParams();
 
-
-export default function CreatePost() {
     const {currentUser} = useContext(AuthContext)
     const [content, setContent] = useState('');
     const [category, setcategory] = useState('')
-    const [cover, setCover] = useState('')
-    const [title, setTile] = useState('')
-    const [loading,setLoading] = useState(false)
+    const [value, setValue] = useState({
+        title: '',
+        cover: '',
+    });
 
+    const getPostForEdit = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3300/posts/singleposts/${postId}`)
+            console.log(response.data);
+            setValue({title: response.data.title, cover: response.data.cover})
+            setContent(response.data.content)
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
-    const sendPost = async () => {
-        
+    useEffect(()=>{
+        getPostForEdit()
+    },[])
+    
 
-        if(title.length <= 0){
+    const updatePost = async () => {
+
+        if(value.title.length <= 0){
             alert(`Hey ${currentUser}, please fill Title field`)
         }else if(category.length <= 0){
             alert(`Hey ${currentUser}, please choose Category`)
         }else{
-            
             if (content.trim() !== '') {
-
-                const formData = new FormData();
-                formData.append('title', title);
-                formData.append('content', content);
-                formData.append('category', category);
-                formData.append('cover', cover);
-
-                setLoading(true)
                 try {
-                    const response = await axios.post('http://localhost:3300/posts', formData, { withCredentials: true, headers: {'Content-Type': 'multipart/form-data',} });
+                    const response = await axios.post(`http://localhost:3300/posts/userpostedit/${postId}`, {
+                        content: content,
+                        ...value, category // Include title, cover, and category
+                    }, { withCredentials: true });
                     
-                    alert(response.data)
-                    setTile('')
+                    alert('Post updated successfully')
+                    setValue({title: '', cover: ''})
                     setcategory('')
                     setContent('')
-                    setLoading(false)
                 } catch (error) {
-                    setLoading(false)
-                    if(error.response.statusText === 'Payload Too Large'){
-                        alert(`Hey ${currentUser}, Image size or Dimension is too large`)
-                    }
-
+                    
                     if(error.response.statusText === "Forbidden"){
-                        alert("Not authenticated!")
+                        alert(`This Is Not Your Post !!!`)
                     }
 
                     console.log(error.response);
                 }
             } else {
-                alert('Content is empty; not sending the request.');
+                console.log('Content is empty; not sending the request.');
             }
-        }   
+        }
+
+        
     }
 
-
-
-    const fileHandler = (e) => {
-        setCover(e.target.files[0])
+    const handleValues = (e) => {
+        setValue((prevValues) => ({ ...prevValues, [e.target.name]: e.target.value }));
     }
-
 
     const modules = {
         blotFormatter: {},
@@ -86,11 +89,11 @@ export default function CreatePost() {
             [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
             [{ 'color': [] }, { 'background': [] }], // text color and background color
             [{ 'font': [] }], // font family
-            [{ 'align': 'right' }, { 'align': 'center' }, { 'align': '' }, { 'align': 'justify' }],
+            [{ 'align': 'center' }, { 'align': 'right' }, { 'align': 'justify' }],
             ['image'],
             ['link'], // add a link option
             ['video'], // add a video embed option
-            ['clean'],
+            ['clean']
         ],
         clipboard: {
             matchVisual: true,
@@ -108,15 +111,10 @@ export default function CreatePost() {
     return (
         <div className='create_post'>
 
-            
-
             <p className='crp_title'>Create New Post</p>
-            
 
             <div className='create_post_inner'>
-
-            {loading ? <LoadingDiv text='Creating Post' /> : <></>}
-
+            
                 <div className='input_fields'>
                     <div className='input_parent'>
                         <input
@@ -124,17 +122,19 @@ export default function CreatePost() {
                             type='text'
                             name='title'
                             placeholder='title'
-                            value={title}
-                            onChange={(e)=> setTile(e.target.value)}
+                            value={value.title}
+                            onChange={handleValues}
                         />
                     </div>
 
                     <div className='input_parent'>
                         <input
                             className='inputStyle_editor'
-                            type='file'
+                            type='text'
                             name='cover'
-                            onChange={fileHandler}
+                            placeholder='cover'
+                            value={value.cover}
+                            onChange={handleValues}
                         />
                     </div>
 
@@ -157,7 +157,7 @@ export default function CreatePost() {
                     className='custom_editor'
                 />
 
-                <button className='textEditorBtn' onClick={sendPost}>send</button>
+                <button className='textEditorBtn' onClick={updatePost}>send</button>
 
             </div>
             

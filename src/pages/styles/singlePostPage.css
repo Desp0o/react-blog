@@ -18,3 +18,13 @@
 .content_single_p * img {
     max-width: 80%;
 }
+
+.ql-align-right{
+    text-align: right;
+}
+.ql-align-center{
+    text-align: center;
+}
+.ql-align-left{
+    text-align: left;
+}
