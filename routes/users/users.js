@@ -68,6 +68,7 @@ export const userLogin = (req, res) => {
     }
 
     const user = data[0];
+   
 
     if (!user.password) {
       return res.status(400).json({ error: 'User password not found' });
@@ -80,11 +81,11 @@ export const userLogin = (req, res) => {
     }
 
     // Generate an access token and a refresh token
-    const accessToken = jwt.sign({ id: user.id }, process.env.JWTKEY, {
+    const accessToken = jwt.sign({id: user.id, name: user.name}, process.env.JWTKEY, {
       expiresIn: '4h', // You should set an appropriate expiration time
     });
 
-    const refreshToken = jwt.sign({ id: user.id }, process.env.JWTKEY_REFRESH, {
+    const refreshToken = jwt.sign({id: user.id, name: user.name}, process.env.JWTKEY_REFRESH, {
       expiresIn: '1w', // You should set an appropriate expiration time
     });
 
@@ -105,9 +106,8 @@ export const userLogin = (req, res) => {
     });
     
     // Send the user's data and access token in the response, excluding the password
-    const { password, id, name, } = user;
-
-    res.status(200).json({ name, id, refreshToken });
+    const { password, id, name, mail } = user;
+    res.status(200).json({ name, id, refreshToken, mail });
   });
 };
 
@@ -152,7 +152,7 @@ export const refreshAccessToken = (req, res) => {
       }
   
       // If the refresh token is valid, generate a new access token
-      const accessToken = jwt.sign({ id: decoded.id }, process.env.JWTKEY, {
+      const accessToken = jwt.sign({ id: decoded.id, name: decoded.name }, process.env.JWTKEY, {
         expiresIn: '4h', // Set an appropriate expiration time
       });
   
@@ -240,3 +240,35 @@ export const updateUser = (req, res) => {
   })
 };
 
+export const getUserInfo = (req, res) => {
+  const token = req.cookies.access_token;
+
+  if (!token) return res.status(401).json("Not authenticated!");
+
+  jwt.verify(token, process.env.JWTKEY, (err, userInfo) => {
+    const userId = userInfo.id;
+
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+    
+    const selectQuery = "SELECT mail, name FROM users WHERE id = ?";
+
+    pool.query(selectQuery, [userId], (selectErr, selectData) => {
+      if (selectErr) {
+        return res.status(500).json({ error: "Internal server error" });
+      }
+
+      if (selectData.length === 0) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      // Assuming selectData is an array with a single user object
+      const user = selectData[0];
+
+      // Send the user's email and name as a response
+      return res.status(200).json({ email: user.mail, name: user.name });
+    });
+
+  })
+};
